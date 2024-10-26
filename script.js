@@ -24,25 +24,18 @@ function cloneItems() {
     carouselItems = document.querySelectorAll('.carousel-item');
 }
 
-//highlight the center item
-function highlightCenterItem() {
-    carouselItems.forEach((item) => item.classList.remove('highlight'));
-    const centerIndex = currentIndex + Math.floor(visibleItemsCount / 2);
-    if (carouselItems[centerIndex]) {
-        carouselItems[centerIndex].classList.add('highlight');
-    }
-}
+
 
 //show the next item
 function showNextItem() {
     applyAnimationClasses();
-    highlightCenterItem();
+     
 
     currentIndex++;
 
     const itemWidth = containerWidth / visibleItemsCount;
     const offset = -currentIndex * itemWidth + (containerWidth / 2 - itemWidth / 2);
-    carouselContainer.style.transition = 'transform 2s ease';
+    carouselContainer.style.transition = 'transform 6s ease';
     carouselContainer.style.transform = `translateX(${offset}px)`;
 
     if (currentIndex >= totalItems) {
@@ -51,7 +44,7 @@ function showNextItem() {
             currentIndex = 0;
             const resetOffset = -currentIndex * itemWidth + (containerWidth / 2 - itemWidth / 2);
             carouselContainer.style.transform = `translateX(${resetOffset}px)`;
-            highlightCenterItem();
+             
         }, 2000);
     }
 }
@@ -70,6 +63,8 @@ function applyAnimationClasses() {
 }
 
 
+
+
 function initCarousel() {
     cloneItems();
     
@@ -78,7 +73,7 @@ function initCarousel() {
     const initialOffset = (containerWidth / 2 - itemWidth / 2);
     carouselContainer.style.transform = `translateX(${initialOffset}px)`;
     
-    highlightCenterItem();
+     
     
     
     setTimeout(() => {

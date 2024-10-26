@@ -18,6 +18,7 @@ html, body {
     max-width: 1400px; 
     margin: 0 auto; 
     padding: 20px;
+    min-height: 100vh;
 }
 
 .testimonial-heading-section h2 {
@@ -71,9 +72,14 @@ html, body {
     will-change: transform;
 }
 
+.carousel-item:nth-child(odd) {
+ 
+}
+
 .carousel-item.highlight {
     transform: scale(1.1); 
     z-index: 2;
+    border-color: #fff;
 }
 .carousel-item:nth-child(3) { 
     transform: scale(1.1); 
@@ -119,7 +125,7 @@ html, body {
 
 @keyframes moveUp {
     0%, 100% {
-        transform: translateY(0);
+        transform: translateY(0px); 
     }
     40% {
         transform: translateY(-45px);
@@ -131,7 +137,7 @@ html, body {
 
 @keyframes moveDown {
     0%, 100% {
-        transform: translateY(0);
+        transform: translateY(0px);
     }
     40% {
         transform: translateY(45px);
@@ -140,6 +146,7 @@ html, body {
         transform: translateY(45px);
     }
 }
+
 
 .up {
     animation: moveUp 6s cubic-bezier(0.5, 0, 0.5, 1) infinite;
