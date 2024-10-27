@@ -1,3 +1,4 @@
+
 const carouselContainer = document.querySelector('.carousel-container');
 let carouselItems = document.querySelectorAll('.carousel-item');
 const totalItems = carouselItems.length;
