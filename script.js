@@ -5,8 +5,10 @@ let currentIndex = 0;
 let toggle = true;
 const visibleItemsCount = 3;
 const containerWidth = 1200;
+let intervalId;
+let isPaused = false;
 
-//clone items for smooth looping
+// Clone items for smooth looping
 function cloneItems() {
     const clonedStart = [];
     const clonedEnd = [];
@@ -20,22 +22,21 @@ function cloneItems() {
         carouselContainer.insertBefore(cloneEnd, carouselContainer.firstChild);
     });
 
-    //update carouselItems NodeList after cloning
+    // Update carouselItems NodeList after cloning
     carouselItems = document.querySelectorAll('.carousel-item');
 }
 
-
-
-//show the next item
+// Show the next item
 function showNextItem() {
+    if (isPaused) return; // Don't proceed if paused
+
     applyAnimationClasses();
-     
 
     currentIndex++;
 
     const itemWidth = containerWidth / visibleItemsCount;
     const offset = -currentIndex * itemWidth + (containerWidth / 2 - itemWidth / 2);
-    carouselContainer.style.transition = 'transform 6s ease';
+    carouselContainer.style.transition = 'transform 2s ease';
     carouselContainer.style.transform = `translateX(${offset}px)`;
 
     if (currentIndex >= totalItems) {
@@ -44,12 +45,11 @@ function showNextItem() {
             currentIndex = 0;
             const resetOffset = -currentIndex * itemWidth + (containerWidth / 2 - itemWidth / 2);
             carouselContainer.style.transform = `translateX(${resetOffset}px)`;
-             
         }, 2000);
     }
 }
 
-//apply animation classes to alternate cards
+// Apply animation classes to alternate cards
 function applyAnimationClasses() {
     carouselItems.forEach((item, index) => {
         item.classList.remove('up', 'down');
@@ -62,24 +62,29 @@ function applyAnimationClasses() {
     toggle = !toggle;
 }
 
-
-
-
 function initCarousel() {
     cloneItems();
-    
-   
+
     const itemWidth = containerWidth / visibleItemsCount;
     const initialOffset = (containerWidth / 2 - itemWidth / 2);
     carouselContainer.style.transform = `translateX(${initialOffset}px)`;
-    
-     
-    
-    
-    setTimeout(() => {
+
+    function startCarousel() {
         showNextItem();
-        setInterval(showNextItem, 6000);
-    }, 100);
+        intervalId = setInterval(showNextItem, 6000);
+    }
+
+    carouselContainer.addEventListener('mouseenter', () => {
+        clearInterval(intervalId);
+        isPaused = true; // Set paused state
+    });
+
+    carouselContainer.addEventListener('mouseleave', () => {
+        isPaused = false; // Clear paused state
+        startCarousel(); // Restart carousel
+    });
+
+    setTimeout(startCarousel, 1000);
 }
 
 document.addEventListener('DOMContentLoaded', initCarousel);

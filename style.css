@@ -73,6 +73,7 @@ html, body {
 }
 
 .carousel-item:nth-child(odd) {
+    
  
 }
 
@@ -139,19 +140,19 @@ html, body {
     0%, 100% {
         transform: translateY(0px);
     }
-    40% {
+    55% {
         transform: translateY(45px);
     }
-    60% {
+    55% {
         transform: translateY(45px);
     }
 }
 
 
 .up {
-    animation: moveUp 6s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    animation: moveUp 6s cubic-bezier(0.5, 0, 0.5, 1) forwards;
 }
 
 .down {
-    animation: moveDown 6s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    animation: moveDown 6s cubic-bezier(0.5, 0, 0.5, 1) forwards;
 }
