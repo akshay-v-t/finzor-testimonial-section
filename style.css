@@ -44,6 +44,8 @@ html, body {
     overflow: hidden;
     position: relative;
     margin-top: 50px;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
 .carousel-container {
@@ -73,8 +75,7 @@ html, body {
 }
 
 .carousel-item:nth-child(odd) {
-    
- 
+    /* You can add styles for odd items here if needed */
 }
 
 .carousel-item.highlight {
@@ -82,6 +83,7 @@ html, body {
     z-index: 2;
     border-color: #fff;
 }
+
 .carousel-item:nth-child(3) { 
     transform: scale(1.1); 
     z-index: 2;
@@ -147,7 +149,6 @@ html, body {
         transform: translateY(45px);
     }
 }
-
 
 .up {
     animation: moveUp 6s cubic-bezier(0.5, 0, 0.5, 1) forwards;

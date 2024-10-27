@@ -7,6 +7,7 @@ const visibleItemsCount = 3;
 const containerWidth = 1200;
 let intervalId;
 let isPaused = false;
+const additionalOffset = 20; // Adjust this value to move the carousel right
 
 // Clone items for smooth looping
 function cloneItems() {
@@ -35,7 +36,7 @@ function showNextItem() {
     currentIndex++;
 
     const itemWidth = containerWidth / visibleItemsCount;
-    const offset = -currentIndex * itemWidth + (containerWidth / 2 - itemWidth / 2);
+    const offset = -currentIndex * itemWidth + (containerWidth / 2 - itemWidth / 2) + additionalOffset;
     carouselContainer.style.transition = 'transform 2s ease';
     carouselContainer.style.transform = `translateX(${offset}px)`;
 
@@ -43,7 +44,7 @@ function showNextItem() {
         setTimeout(() => {
             carouselContainer.style.transition = 'none';
             currentIndex = 0;
-            const resetOffset = -currentIndex * itemWidth + (containerWidth / 2 - itemWidth / 2);
+            const resetOffset = -currentIndex * itemWidth + (containerWidth / 2 - itemWidth / 2) + additionalOffset;
             carouselContainer.style.transform = `translateX(${resetOffset}px)`;
         }, 2000);
     }
@@ -66,7 +67,7 @@ function initCarousel() {
     cloneItems();
 
     const itemWidth = containerWidth / visibleItemsCount;
-    const initialOffset = (containerWidth / 2 - itemWidth / 2);
+    const initialOffset = (containerWidth / 2 - itemWidth / 2) + additionalOffset;
     carouselContainer.style.transform = `translateX(${initialOffset}px)`;
 
     function startCarousel() {
