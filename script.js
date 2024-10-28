@@ -9,12 +9,12 @@ let currentIndex = 0;
 let intervalId, isPaused = false;
 
 function cloneItems() {
-    const clones = [...carouselItems].flatMap(item => [
-        item.cloneNode(true),
-        item.cloneNode(true)
-    ]);
-    carouselContainer.append(...clones.slice(0, totalItems)); // clone end
-    carouselContainer.prepend(...clones.slice(totalItems));   // clone start
+    const clonesStart = Array.from(carouselItems).map(item => item.cloneNode(true));
+    const clonesEnd = Array.from(carouselItems).map(item => item.cloneNode(true));
+
+    clonesEnd.forEach(clone => carouselContainer.appendChild(clone));
+    clonesStart.reverse().forEach(clone => carouselContainer.insertBefore(clone, carouselContainer.firstChild));
+
     carouselItems = document.querySelectorAll('.carousel-item'); 
 }
 
