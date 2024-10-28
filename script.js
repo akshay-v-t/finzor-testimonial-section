@@ -1,43 +1,38 @@
 const carouselContainer = document.querySelector('.carousel-container');
 let carouselItems = document.querySelectorAll('.carousel-item');
 const totalItems = carouselItems.length;
-let currentIndex = 0;
 const visibleItemsCount = 3;
 const containerWidth = 1200;
-let intervalId;
-let isPaused = false;
 const additionalOffset = 20;
 const itemWidth = containerWidth / visibleItemsCount;
+let currentIndex = 0;
+let intervalId, isPaused = false;
 
 function cloneItems() {
-    carouselItems.forEach(item => {
-        carouselContainer.appendChild(item.cloneNode(true));
-        carouselContainer.insertBefore(item.cloneNode(true), carouselContainer.firstChild);
-    });
-    carouselItems = document.querySelectorAll('.carousel-item');
+    const clones = [...carouselItems].flatMap(item => [
+        item.cloneNode(true),
+        item.cloneNode(true)
+    ]);
+    carouselContainer.append(...clones.slice(0, totalItems)); // clone end
+    carouselContainer.prepend(...clones.slice(totalItems));   // clone start
+    carouselItems = document.querySelectorAll('.carousel-item'); 
+}
+
+function updateTransform() {
+    const offset = -currentIndex * itemWidth + (containerWidth / 2 - itemWidth / 2) + additionalOffset;
+    carouselContainer.style.transition = currentIndex === 0 ? 'none' : 'transform 6s ease';
+    carouselContainer.style.transform = `translateX(${offset}px)`;
 }
 
 function showNextItem() {
-    if (isPaused) return;
-    currentIndex++;
-    const offset = -currentIndex * itemWidth + (containerWidth / 2 - itemWidth / 2) + additionalOffset;
-    carouselContainer.style.transition = 'transform 6s ease';
-    carouselContainer.style.transform = `translateX(${offset}px)`;
-
-    if (currentIndex >= totalItems) {
-        setTimeout(() => {
-            carouselContainer.style.transition = 'none';
-            currentIndex = 0;
-            const resetOffset = -currentIndex * itemWidth + (containerWidth / 2 - itemWidth / 2) + additionalOffset;
-            carouselContainer.style.transform = `translateX(${resetOffset}px)`;
-        }, 6000);
+    if (!isPaused) {
+        currentIndex = (currentIndex + 1) % totalItems;
+        updateTransform();
     }
 }
 
 function applyAnimationClasses() {
-    carouselItems.forEach((item, index) => {
-        item.classList.add(index % 2 === 0 ? 'down' : 'up');
-    });
+    carouselItems.forEach((item, index) => item.classList.add(index % 2 === 0 ? 'down' : 'up'));
 }
 
 function startCarousel() {
@@ -48,8 +43,8 @@ function startCarousel() {
 
 function initCarousel() {
     cloneItems();
-    const initialOffset = (containerWidth / 2 - itemWidth / 2) + additionalOffset;
-    carouselContainer.style.transform = `translateX(${initialOffset}px)`;
+    updateTransform();
+    applyAnimationClasses();
 
     carouselContainer.addEventListener('mouseenter', () => {
         clearInterval(intervalId);
@@ -61,7 +56,6 @@ function initCarousel() {
         startCarousel();
     });
 
-    applyAnimationClasses();
     startCarousel();
 }
 
