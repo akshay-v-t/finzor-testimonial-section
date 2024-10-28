@@ -9,30 +9,17 @@ let isPaused = false;
 const additionalOffset = 20;
 const itemWidth = containerWidth / visibleItemsCount;
 
-// Clone items for smooth looping
 function cloneItems() {
-    const clonedStart = [];
-    const clonedEnd = [];
-
-    carouselItems.forEach((item) => {
-        const cloneStart = item.cloneNode(true);
-        const cloneEnd = item.cloneNode(true);
-        clonedStart.push(cloneStart);
-        clonedEnd.push(cloneEnd);
-        carouselContainer.appendChild(cloneStart);
-        carouselContainer.insertBefore(cloneEnd, carouselContainer.firstChild);
+    carouselItems.forEach(item => {
+        carouselContainer.appendChild(item.cloneNode(true));
+        carouselContainer.insertBefore(item.cloneNode(true), carouselContainer.firstChild);
     });
-
-    // Update carouselItems NodeList after cloning
     carouselItems = document.querySelectorAll('.carousel-item');
 }
 
-// Show the next item
 function showNextItem() {
     if (isPaused) return;
-
     currentIndex++;
-
     const offset = -currentIndex * itemWidth + (containerWidth / 2 - itemWidth / 2) + additionalOffset;
     carouselContainer.style.transition = 'transform 6s ease';
     carouselContainer.style.transform = `translateX(${offset}px)`;
@@ -47,30 +34,22 @@ function showNextItem() {
     }
 }
 
-// Apply animation classes to alternate cards once
 function applyAnimationClasses() {
     carouselItems.forEach((item, index) => {
-        // Apply initial animation direction based on the index
-        if (index % 2 === 0) {
-            item.classList.add('down');
-        } else {
-            item.classList.add('up');
-        }
+        item.classList.add(index % 2 === 0 ? 'down' : 'up');
     });
 }
 
-// Initialize the carousel
+function startCarousel() {
+    clearInterval(intervalId);
+    intervalId = setInterval(showNextItem, 6000);
+    showNextItem();
+}
+
 function initCarousel() {
     cloneItems();
-
     const initialOffset = (containerWidth / 2 - itemWidth / 2) + additionalOffset;
     carouselContainer.style.transform = `translateX(${initialOffset}px)`;
-
-    function startCarousel() {
-        clearInterval(intervalId); // Clear any existing interval before starting
-        intervalId = setInterval(showNextItem, 6000);
-        showNextItem(); // Start immediately
-    }
 
     carouselContainer.addEventListener('mouseenter', () => {
         clearInterval(intervalId);
@@ -79,11 +58,11 @@ function initCarousel() {
 
     carouselContainer.addEventListener('mouseleave', () => {
         isPaused = false;
-        startCarousel(); // Restart immediately on mouse leave
+        startCarousel();
     });
 
-    applyAnimationClasses(); // Only apply once to avoid reset
-    startCarousel(); // Start immediately on load
+    applyAnimationClasses();
+    startCarousel();
 }
 
 document.addEventListener('DOMContentLoaded', initCarousel);
