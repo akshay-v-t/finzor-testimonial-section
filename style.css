@@ -18,11 +18,10 @@ html, body {
     max-width: 1400px; 
     margin: 0 auto; 
     padding: 20px;
-    min-height: 100vh;
-}
+} 
 
 .testimonial-heading-section h2 {
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     font-size: 48px;
     font-weight: 700;
     text-align: center;
@@ -64,17 +63,32 @@ html, body {
     padding: 20px;
     background-color: #292929;
     border-radius: 10px;
-    border: 1px solid #FFFFFF26;
+    border: 1px solid transparent;
     color: #FFFFFFCC;
     text-align: center;
-    transition: all 0.3s ease-in-out;
     position: relative;
-    will-change: transform;
+    overflow: hidden; 
+    transition: all 0.3s ease-in-out;
 }
 
-.carousel-item:nth-child(odd) {
-    
- 
+.carousel-item:hover::before {
+    content: '';
+    position: absolute;
+    top: -3px; 
+    left: -3px; 
+    right: -3px; 
+    bottom: -3px;
+    border-radius: 12px; 
+    padding: 2px;
+    background: linear-gradient(60deg, #3a3a3a, #000000 );
+    background-size: 300% 300%;
+    animation: gradientBorder 5s ease infinite;
+    z-index: -1;
+}
+
+.carousel-item > * {
+    position: relative;
+    z-index: 1;
 }
 
 .carousel-item.highlight {
@@ -82,6 +96,7 @@ html, body {
     z-index: 2;
     border-color: #fff;
 }
+
 .carousel-item:nth-child(3) { 
     transform: scale(1.1); 
     z-index: 2;
@@ -92,12 +107,12 @@ html, body {
 }
 
 .carousel-item h3 {
-    font-size: 18px;
+    font-size: 16px;
     color: #FFFFFF99;
     font-weight: 500;
 }
 
-.carousel-item P {
+.carousel-item p {
     font-size: 14px;
     color: #FFFFFF99;
     font-weight: 500;
@@ -124,57 +139,73 @@ html, body {
     background: linear-gradient(to left, #121212, transparent);
 }
 
+.up {
+    animation: moveUp 12s cubic-bezier(0.5, 0, 0.5, 1) infinite alternate;
+    animation-play-state: running;
+}
+
+.down {
+    animation: moveDown 12s cubic-bezier(0.5, 0, 0.5, 1) infinite alternate;
+    animation-play-state: running;
+}
+
+.carousel-container:hover .carousel-item.down,
+.carousel-container:hover .carousel-item.up {
+    animation-play-state: paused;
+}
+
+@keyframes gradientBorder {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 @keyframes moveUp {
-    0%, 100% {
-        transform: translateY(0px); 
+    0% {
+        transform: translateY(45px); 
     }
-    40% {
+    20% {
+        transform: translateY(45px);
+    }
+    55% {
         transform: translateY(-45px);
     }
     60% {
         transform: translateY(-45px);
     }
+    100% {
+        transform: translateY(45px); 
+    }
 }
 
 @keyframes moveDown {
-    0%, 100% {
-        transform: translateY(0px);
+    0% {
+        transform: translateY(-45px);
+    }
+    20% {
+        transform: translateY(-45px);
     }
     55% {
         transform: translateY(45px);
     }
-    55% {
+    60% {
         transform: translateY(45px);
     }
+    100% {
+        transform: translateY(-45px);
+    }
 }
-
-
-.up {
-    animation: moveUp 6s cubic-bezier(0.5, 0, 0.5, 1) forwards;
-}
-
-.down {
-    animation: moveDown 6s cubic-bezier(0.5, 0, 0.5, 1) forwards;
-}
-
-
 
 @media (max-width: 768px) {
     .testimonial-heading-section h2 {
         font-size: 28px;
     }
+
     .testimonial-section {
-       
         box-sizing: border-box;
     }
 
     .testimonial-heading-section p {
         font-size: 14px;
-        
     }
-
-   
-
-   
-
-  
+}
